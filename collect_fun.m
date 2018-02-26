@@ -12,12 +12,13 @@ while hasdata(ds)
 end
 %Make a second set of data. Here we just replace <31 with 30.5 in the data
 for k = 1:49
-    data2{k,1} = data{1,k};
-    t = cell2table(data{1,k}.SpdOfMaxGust_km_h_);
-    y = table2array(t);
-    y = strrep(y,'<31','30.5');
-    data2{k,1}.SpdOfMaxGust_km_h_ = y;
+    data2{k,1} = data{1,k}; %extract data cell by cell
+    t = cell2table(data{1,k}.SpdOfMaxGust_km_h_); %extract just the data column for modifications
+    y = table2array(t); %prepare to make modifications
+    y = strrep(y,'<31','30.5'); %make modifications
+    data2{k,1}.SpdOfMaxGust_km_h_ = y; %overwrite the modified data into its old column
 end
+
 %summary(A)
 
 %====================================================================
