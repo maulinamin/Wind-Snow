@@ -18,8 +18,55 @@ for k = 1:49
     y = strrep(y,'<31','30.5'); %make modifications
     data2{k,1}.SpdOfMaxGust_km_h_ = y; %overwrite the modified data into its old column
 end
+%Extract maximum data points for each of the years
+for k = 1:49
+    A = (data2{k,1});
+    temp_A_Date_Time = datetime(A.Date_Time,'InputFormat','yyyy-MM-dd'); %Array that converts 'string date' to datetime format
+    A.Date_Time = temp_A_Date_Time;
+    Wind_Gust = cell2table(data2{k,1}.SpdOfMaxGust_km_h_);
+    Wind_Gust = table2array(Wind_Gust);
+    Wind_Gust = str2double(Wind_Gust);
+    A.SpdOfMaxGust_km_h_ = (Wind_Gust);
+    A = table2timetable(A);
+    idx = ~any(ismissing(A),2);
+    A = A(idx,:);
+    B = sortrows(A,1,'descend');
+    B = timetable2table(B);
+    MaxPoints(k,:) = B(1,:);
+end
 
-%summary(A)
+
+% %W/o tall
+% A = (data2{1,1});
+% temp_A_Date_Time = datetime(A.Date_Time,'InputFormat','yyyy-MM-dd'); %Array that converts 'string date' to datetime format
+% A.Date_Time = temp_A_Date_Time;
+% Wind_Gust = cell2table(data2{1,1}.SpdOfMaxGust_km_h_);
+% Wind_Gust = table2array(Wind_Gust);
+% Wind_Gust = str2double(Wind_Gust);
+% A.SpdOfMaxGust_km_h_ = (Wind_Gust);
+% A = table2timetable(A);
+% idx = ~any(ismissing(A),2);
+% A = A(idx,:);
+% [M,I] = max(A.SpdOfMaxGust_km_h_)
+% B = sortrows(A,1,'descend')
+% B = timetable2table(B)
+% MaxPoints(1,:) = B(1,:)
+% w/ tall
+% A = tall(data2{1,1});
+% temp_A_Date_Time = datetime(A.Date_Time,'InputFormat','yyyy-MM-dd'); %Array that converts 'string date' to datetime format
+% A.Date_Time = temp_A_Date_Time;
+% Wind_Gust = cell2table(data2{1,1}.SpdOfMaxGust_km_h_);
+% Wind_Gust = table2array(Wind_Gust);
+% Wind_Gust = str2double(Wind_Gust);
+% A.SpdOfMaxGust_km_h_ = tall(Wind_Gust);
+% A = table2timetable(A);
+% idx = ~any(ismissing(A),2);
+% A = A(idx,:);
+
+
+% u = strrep(u,'<31','30.5');
+% A.SpdOfMaxGust_km_h_ = u;
+
 
 %====================================================================
 %DISCARDED CODE
