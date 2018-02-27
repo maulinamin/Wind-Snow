@@ -12,7 +12,8 @@ function MaxPoints = CollectMaxDataPointsForAStation(folder)
         i=i+1;
     end
     %Make a second set of data. Here we just replace <31 with 30.5 in the data
-    for k = 1:49
+    u = numel(data);
+    for k = 1:u
         data2{k,1} = data{1,k}; %extract data cell by cell
         t = cell2table(data{1,k}.SpdOfMaxGust_km_h_); %extract just the data column for modifications
         y = table2array(t); %prepare to make modifications
@@ -20,13 +21,18 @@ function MaxPoints = CollectMaxDataPointsForAStation(folder)
         data2{k,1}.SpdOfMaxGust_km_h_ = y; %overwrite the modified data into its old column
     end
     %Extract maximum data points for each of the years
-    for k = 1:49
+    u = numel(data);
+    for k = 1:u
         A = (data2{k,1});
         temp_A_Date_Time = datetime(A.Date_Time,'InputFormat','yyyy-MM-dd'); %Array that converts 'string date' to datetime format
         A.Date_Time = temp_A_Date_Time;
         Wind_Gust = cell2table(data2{k,1}.SpdOfMaxGust_km_h_);
         Wind_Gust = table2array(Wind_Gust);
         Wind_Gust = str2double(Wind_Gust);
+        if isnan(Wind_Gust)
+            u = u-1;
+            continue
+        end
         A.SpdOfMaxGust_km_h_ = (Wind_Gust);
         A = table2timetable(A);
         idx = ~any(ismissing(A),2);
@@ -34,8 +40,11 @@ function MaxPoints = CollectMaxDataPointsForAStation(folder)
         B = sortrows(A,1,'descend');
         B = timetable2table(B);
         MaxPoints(k,:) = B(1,:);
+    end
+    u = numel(data);
+    TEMP = MaxPoints;
+    MaxPoints = rmmissing(TEMP);
 end
-
 
 % %W/o tall
 % A = (data2{1,1});
