@@ -29,6 +29,7 @@ function MaxPoints = CollectMaxDataPointsForAStation(folder)
         Wind_Gust = cell2table(data2{k,1}.SpdOfMaxGust_km_h_);
         Wind_Gust = table2array(Wind_Gust);
         Wind_Gust = str2double(Wind_Gust);
+        %if loop makes sure that the NaN years are ignored.
         if isnan(Wind_Gust)
             u = u-1;
             continue

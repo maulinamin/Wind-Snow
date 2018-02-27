@@ -1,5 +1,9 @@
 clear; % Clear Memory
 clc; %Clear Command Window
+%===================================
+%CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
+%===================================
+
 File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step1.xlsx';
 
 % %=================================
