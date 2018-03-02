@@ -13,7 +13,7 @@ clc; %Clear Command Window
         i=i+1;
     end
     %Make a second set of data. Here we just replace <31 with 30.5 in the data
-    for k = 1:49
+    for k = 1:numel(data)
         data2{k,1} = data{1,k}; %extract data cell by cell
         t = cell2table(data{1,k}.SpdOfMaxGust_km_h_); %extract just the data column for modifications
         y = table2array(t); %prepare to make modifications
