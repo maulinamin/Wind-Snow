@@ -81,16 +81,59 @@ MaxPoints{8,1} = CollectMaxDataPointsForAStation(folder8);
 temp = (MaxPoints{8,1});
 MaxPoints{8,1} = sortrows(temp,2,'descend');
 
+%=========================================================================
+% Finding the threshold
+%=========================================================================
+
+%declare the location of the excel file in which we are going to write the
+%data
+File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step2.xlsx';
+
+%for loop creates two tables: Low and High
+%High table has the max points of all the stations
+%Low table has the min points of all the stations
 for k = 1:8
     T = MaxPoints{k,1};
     H = height(T);
-    R(k,1) = T(H,1);
-    R(k,2)= T(H,2);
-    R(k,3) = T(1,1);
-    R(k,4) = T(1,2);
+    Low(k,:) = T(H,:);
+    High(k,:) = T(1,:);
 end
-City_Names = {'Toronto Airport','Trenton','Toronto Island','London','Wiarton','KW','Hamilton','Sarnia'};
-R.Properties.VariableNames = {'Min_Date_Time','Min_SpdOfMaxGust_km_h_','Max_Date_Time','Max_SpdOfMaxGust_km_h_'}
-R.Properties.RowNames = City_Names;
+%Cell array with the names of the stations
+City_Names = {'Toronto Airport';'Trenton';'Toronto Island';'London';'Wiarton';'KW';'Hamilton';'Sarnia'};
+%Add a column with the names of the stations to the tables Low and High
+Low.City_Names = City_Names; High.City_Names = City_Names;
+%Renaming the variable names of the table so that when we join the two
+%tables we can differentiate between the min and the max data
+Low.Properties.VariableNames = {'Min_Date_Time','Min_SpdOfMaxGust_km_h_','City_Names'};
+High.Properties.VariableNames = {'Max_Date_Time','Max_SpdOfMaxGust_km_h_','City_Names'};
+%join the two tables
+Range = join(Low,High);
+%Sort the two tables to find the range of the values that will help us
+%decide the threshold.
+Low = sortrows(Low,2,'ascend');
+High = sortrows(High,2,'descend');
+%Write the tables to an Excel Workbook so that I can share the data.
+writetable(Range,File,'Sheet','Ranges');
+writetable(Low,File,'Sheet','Minimum');
+writetable(High,File,'Sheet','Maximum');
+
+%DISCARDED CODE
+% Low.Properties.RowNames = City_Names;
+% High.Properties.RowNames = City_Names;
+% Range = join(Low,High)
+% 
+% for k = 1:8
+%     T = MaxPoints{k,1};
+%     H = height(T);
+%     R(k,1) = T(H,1);
+%     R(k,2)= T(H,2);
+%     R(k,3) = T(1,1);
+%     R(k,4) = T(1,2);
+% end
+% City_Names = {'Toronto Airport','Trenton','Toronto Island','London','Wiarton','KW','Hamilton','Sarnia'};
+% R.Properties.VariableNames = {'Min_Date_Time','Min_SpdOfMaxGust_km_h_','Max_Date_Time','Max_SpdOfMaxGust_km_h_'}
+% R.Properties.RowNames = City_Names;
+
+
 % % MaxPoints{1,1}(H,:)
 % % Range{1,2} = MaxPoints{1,1}(1,:)
