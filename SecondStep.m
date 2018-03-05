@@ -74,7 +74,7 @@ MaxPoints{7,1} = sortrows(temp,2,'descend');
 % %=================================
 % %===========================Sarnia
 % %=================================
-folder8='C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&SnowData\CSV\Hamilton';
+folder8='C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&SnowData\CSV\Sarnia';
 %Get the maximum data points for Sarnia
 MaxPoints{8,1} = CollectMaxDataPointsForAStation(folder8);
 %Sort and rewrite the maximum data points for Toronto
