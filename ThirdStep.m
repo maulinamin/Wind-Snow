@@ -18,6 +18,8 @@ t = cell2table(wind_data.SpdOfMaxGust_km_h_); %extract just the data column for 
 y = table2array(t); %prepare to make modifications
 y = strrep(y,'<31','30.5'); %make modifications
 wind_data.SpdOfMaxGust_km_h_ = y;
+%remove the rows with missing entries
+wind_data = rmmissing(wind_data);
 
 % for k = 1:numel(wind_data)
 %     wind_data2 = wind_data; %extract data cell by cell
