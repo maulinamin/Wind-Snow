@@ -29,7 +29,7 @@ A = timetable2table(A);
 for k = 2:numel(A.Date_Time)
     A.Time_Interval(k) = daysact(A.Date_Time(k-1), A.Date_Time(k));
 end
-%Copy it back to original
+%Copy it to the output variable
 WindData = A;
 
 end
