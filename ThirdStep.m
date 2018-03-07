@@ -1,11 +1,16 @@
 clear; % Clear Memory
 clc; %Clear Command Window
+%Location of the file
+File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step3.xlsx';
 %===================================
 %CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
 %===================================
-
-File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step3.xlsx';
-
+for SheetNum=1:9
+     [N, T, Raw]=xlsread(File, SheetNum);
+     [Raw{:, :}]=deal(NaN);
+     xlswrite(File, Raw, SheetNum);
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %=================================
 % %===========================TORONTO AIRPORT
 % %=================================
