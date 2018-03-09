@@ -55,27 +55,27 @@ A(toDelete,:) = [];
 %Copy it to the output variable
 WindData{2} = A;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-PPTH60 = WindData{1}(:,2);
-PPTH60 = sortrows(PPTH60,1,'ascend');
-PPTH60.Properties.VariableNames{'SpdOfMaxGust_km_h_'} = 'Kmph';
-z = numel(PPTH60);
-for k = 1:z
-    PPTH60.Ln_Kmph(k) = log(PPTH60.Kmph(k));
-end
-for k = 1:z
-    PPTH60.Rank(k) = k;
-end
-for k = 1:z
-    PPTH60.Pi(k) = k/(z+1);
-end
-for k = 1:z
-    PPTH60.InvPi(k) = norminv(PPTH60.Pi(k));
-end
-for k = 1:z
-    PPTH60.WeibPi(k) = log(-log(1-PPTH60.Pi(k)));
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PPTH60 = WindData{1}(:,2);
+% PPTH60 = sortrows(PPTH60,1,'ascend');
+% PPTH60.Properties.VariableNames{'SpdOfMaxGust_km_h_'} = 'Kmph';
+% z = numel(PPTH60);
+% for k = 1:z
+%     PPTH60.Ln_Kmph(k) = log(PPTH60.Kmph(k));
+% end
+% for k = 1:z
+%     PPTH60.Rank(k) = k;
+% end
+% for k = 1:z
+%     PPTH60.Pi(k) = k/(z+1);
+% end
+% for k = 1:z
+%     PPTH60.InvPi(k) = norminv(PPTH60.Pi(k));
+% end
+% for k = 1:z
+%     PPTH60.WeibPi(k) = log(-log(1-PPTH60.Pi(k)));
+% end
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PPTH70 = WindData{2}(:,2);
 PPTH70 = sortrows(PPTH70,1,'ascend');
 PPTH70.Properties.VariableNames{'SpdOfMaxGust_km_h_'} = 'Kmph';
@@ -83,8 +83,10 @@ z = numel(PPTH70);
 for k = 1:z
     PPTH70.Ln_Kmph(k) = log(PPTH70.Kmph(k));
 end
+a = 60;
 for k = 1:z
-    PPTH70.Rank(k) = k;
+    PPTH70.Rank(k) = a;
+    a = a+1;
 end
 for k = 1:z
     PPTH70.Pi(k) = k/(z+1);
@@ -95,47 +97,57 @@ end
 for k = 1:z
     PPTH70.WeibPi(k) = log(-log(1-PPTH70.Pi(k)));
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-PPTI70 = WindData{2}(:,3);
-PPTI70 = sortrows(PPTI70,1,'ascend');
-z = numel(PPTI70);
-for k = 1:z
-    PPTI70.Ln_TI(k) = log(PPTI70.Time_Interval(k));
-end
-for k = 1:z
-    PPTI70.Rank(k) = k;
-end
-for k = 1:z
-    PPTI70.Pi(k) = k/(z+1);
-end
-for k = 1:z
-    PPTI70.InvPi(k) = norminv(PPTI70.Pi(k));
-end
-for k = 1:z
-    PPTI70.WeibPi(k) = log(-log(1-PPTI70.Pi(k)));
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-PPTI60 = WindData{1}(:,3);
-PPTI60 = sortrows(PPTI60,1,'ascend');
-z = numel(PPTI60);
-for k = 1:z
-    PPTI60.Ln_TI(k) = log(PPTI60.Time_Interval(k));
-end
-for k = 1:z
-    PPTI60.Rank(k) = k;
-end
-for k = 1:z
-    PPTI60.Pi(k) = k/(z+1);
-end
-for k = 1:z
-    PPTI60.InvPi(k) = norminv(PPTI60.Pi(k));
-end
-for k = 1:z
-    PPTI60.WeibPi(k) = log(-log(1-PPTI60.Pi(k)));
-end
+p = polyfit(PPTH70.InvPi,PPTH70.Kmph,1); 
+f = polyval(p,PPTH70.InvPi); 
+plot(PPTH70.InvPi,PPTH70.Kmph,'.',PPTH70.InvPi,f,'-') 
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH70.InvPi,PPTH70.Kmph);
+X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+annotation('textbox',dim,'String',X,'FitBoxToText','on');
 
-File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step4.xlsx';
-writetable(PPTH60,File,'Sheet','PPP < 60kmph');
-writetable(PPTH70,File,'Sheet','PPP < 70kmph');
-writetable(PPTI60,File,'Sheet','PPP 60 interarrival');
-writetable(PPTI70,File,'Sheet','PPP 70 interarrival');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PPTI70 = WindData{2}(:,3);
+% PPTI70 = sortrows(PPTI70,1,'ascend');
+% z = numel(PPTI70);
+% for k = 1:z
+%     PPTI70.Ln_TI(k) = log(PPTI70.Time_Interval(k));
+% end
+% for k = 1:z
+%     PPTI70.Rank(k) = k;
+% end
+% for k = 1:z
+%     PPTI70.Pi(k) = k/(z+1);
+% end
+% for k = 1:z
+%     PPTI70.InvPi(k) = norminv(PPTI70.Pi(k));
+% end
+% for k = 1:z
+%     PPTI70.WeibPi(k) = log(-log(1-PPTI70.Pi(k)));
+% end
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PPTI60 = WindData{1}(:,3);
+% PPTI60 = sortrows(PPTI60,1,'ascend');
+% z = numel(PPTI60);
+% for k = 1:z
+%     PPTI60.Ln_TI(k) = log(PPTI60.Time_Interval(k));
+% end
+% for k = 1:z
+%     PPTI60.Rank(k) = k;
+% end
+% for k = 1:z
+%     PPTI60.Pi(k) = k/(z+1);
+% end
+% for k = 1:z
+%     PPTI60.InvPi(k) = norminv(PPTI60.Pi(k));
+% end
+% for k = 1:z
+%     PPTI60.WeibPi(k) = log(-log(1-PPTI60.Pi(k)));
+% end
+% 
+% File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step4.xlsx';
+% writetable(PPTH60,File,'Sheet','PPP < 60kmph');
+% writetable(PPTH70,File,'Sheet','PPP < 70kmph');
+% writetable(PPTI60,File,'Sheet','PPP 60 interarrival');
+% writetable(PPTI70,File,'Sheet','PPP 70 interarrival');
