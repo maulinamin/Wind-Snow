@@ -1,5 +1,3 @@
-%this program is the function of Extracting the data above the threshold
-%Use this to verify the program
 clear; % Clear Memory
 clc; %Clear Command Window
 %Define the folder location of CSV files
@@ -128,7 +126,7 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.InvPi,PPTH60.Kmph);
 X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
-print('PPP60kmphNormal','-dpng')
+% % % % % print('PPP60kmphNormal','-dpng')
 %PLOT THE LOGNORMAL PPP
 p = polyfit(PPTH60.InvPi,PPTH60.Ln_Kmph,1); 
 f = polyval(p,PPTH60.InvPi); 
@@ -141,7 +139,7 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_Kmph);
 X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
-print('PPP60kmphLogNormal','-dpng')
+% % % % % print('PPP60kmphLogNormal','-dpng')
 %====================
 %PLOT THE WEIBULL PPP
 p = polyfit(PPTH60.WeibPi,PPTH60.Ln_Kmph,1); 
@@ -155,7 +153,7 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.WeibPi,PPTH60.Ln_Kmph);
 X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
-print('PPP60kmphWeibull','-dpng')
+% % % % % print('PPP60kmphWeibull','-dpng')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %DATA GREATER THAN 70 KMPH
