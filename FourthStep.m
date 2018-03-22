@@ -28,30 +28,65 @@ wind_data.SpdOfMaxGust_km_h_ = (Wind_Gust);
 %Delete all the data below 60kmph
 A = wind_data;
 A = table2timetable(A);
-toDelete = A.SpdOfMaxGust_km_h_ < 60;
+toDelete = A.SpdOfMaxGust_km_h_ < 61;
 A(toDelete,:) = [];
+% % % % % %plot histogram
+% % % % % figure;
+% % % % % histogram(A.SpdOfMaxGust_km_h_,30);
+% % % % % title('Histogram Kmph >60');
+% % % % % print('PPP60kmphHist','-dpng')
+%Shift the kmph data
+for k = 1:numel(A.SpdOfMaxGust_km_h_)
+    A.SpdOfMaxGust_km_h_(k) = A.SpdOfMaxGust_km_h_(k) - 60;
+end
 %Calculate the time interval between the data
 A = timetable2table(A);
 for k = 2:numel(A.Date_Time)
 A.Time_Interval(k) = daysact(A.Date_Time(k-1), A.Date_Time(k));
 end
-toDelete = A.Time_Interval < 7;
+toDelete = A.Time_Interval < 8;
 A(toDelete,:) = [];
+% % % % % %plot histogram
+% % % % % figure;
+% % % % % histogram(A.Time_Interval,30);
+% % % % % title('Histogram 60 Kmph Inter-arrival');
+% % % % % print('PPP60TIHist','-dpng')
+%Shift the Inter-arrival data
+for k = 1:numel(A.Time_Interval)
+    A.Time_Interval(k) = A.Time_Interval(k) - 7;
+end
 %Copy it to the output variable
 WindData{1} = A;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Delete all the data below 70kmph
 A = wind_data;
 A = table2timetable(A);
-toDelete = A.SpdOfMaxGust_km_h_ < 70;
+toDelete = A.SpdOfMaxGust_km_h_ < 71;
 A(toDelete,:) = [];
+% % % % % %plot histogram
+% % % % % figure;
+% % % % % histogram(A.SpdOfMaxGust_km_h_,30);
+% % % % % title('Histogram Kmph >70');
+% % % % % print('PPP70kmphHist','-dpng')
+%Shift the data
+for k = 1:numel(A.SpdOfMaxGust_km_h_)
+    A.SpdOfMaxGust_km_h_(k) = A.SpdOfMaxGust_km_h_(k) - 70;
+end
 %Calculate the time interval between the data
 A = timetable2table(A);
 for k = 2:numel(A.Date_Time)
 A.Time_Interval(k) = daysact(A.Date_Time(k-1), A.Date_Time(k));
 end
-toDelete = A.Time_Interval < 7;
+toDelete = A.Time_Interval < 8;
 A(toDelete,:) = [];
+% % % % % figure;
+% % % % % histogram(A.Time_Interval,30);
+% % % % % title('Histogram 70 Kmph Inter-arrival');
+% % % % % print('PPP70TIHist','-dpng')
+%Shift the Inter-arrival data
+for k = 1:numel(A.Time_Interval)
+    A.Time_Interval(k) = A.Time_Interval(k) - 7;
+end
 %Copy it to the output variable
 WindData{2} = A;
 
@@ -61,6 +96,7 @@ WindData{2} = A;
 PPTH60 = WindData{1}(:,2);
 PPTH60 = sortrows(PPTH60,1,'ascend');
 PPTH60.Properties.VariableNames{'SpdOfMaxGust_km_h_'} = 'Kmph';
+%calculations for PPP
 z = numel(PPTH60);
 for k = 1:z
     PPTH60.Ln_Kmph(k) = log(PPTH60.Kmph(k));
@@ -73,6 +109,9 @@ for k = 1:z
 end
 for k = 1:z
     PPTH60.InvPi(k) = norminv(PPTH60.Pi(k));
+end
+for k = 1:z
+    PPTH60.ExpPi(k) = -log(1-PPTH60.Pi(k));
 end
 for k = 1:z
     PPTH60.WeibPi(k) = log(-log(1-PPTH60.Pi(k)));
@@ -103,6 +142,7 @@ mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_Kmph);
 X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
 print('PPP60kmphLogNormal','-dpng')
+%====================
 %PLOT THE WEIBULL PPP
 p = polyfit(PPTH60.WeibPi,PPTH60.Ln_Kmph,1); 
 f = polyval(p,PPTH60.WeibPi); 
@@ -117,10 +157,14 @@ X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
 print('PPP60kmphWeibull','-dpng')
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DATA GREATER THAN 70 KMPH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PPTH70 = WindData{2}(:,2);
 PPTH70 = sortrows(PPTH70,1,'ascend');
 PPTH70.Properties.VariableNames{'SpdOfMaxGust_km_h_'} = 'Kmph';
+
+%calculations for PPP
 z = numel(PPTH70);
 for k = 1:z
     PPTH70.Ln_Kmph(k) = log(PPTH70.Kmph(k));
@@ -133,6 +177,9 @@ for k = 1:z
 end
 for k = 1:z
     PPTH70.InvPi(k) = norminv(PPTH70.Pi(k));
+end
+for k = 1:z
+    PPTH70.ExpPi(k) = -log(1-PPTH70.Pi(k));
 end
 for k = 1:z
     PPTH70.WeibPi(k) = log(-log(1-PPTH70.Pi(k)));
@@ -177,7 +224,9 @@ X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
 print('PPP70kmphWeibull','-dpng')
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DATA GREATER THAN 70 KMPH but analysing Inter-arrival time
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PPTI70 = WindData{2}(:,3);
 PPTI70 = sortrows(PPTI70,1,'ascend');
 z = numel(PPTI70);
@@ -192,6 +241,9 @@ for k = 1:z
 end
 for k = 1:z
     PPTI70.InvPi(k) = norminv(PPTI70.Pi(k));
+end
+for k = 1:z
+    PPTI70.ExpPi(k) = -log(1-PPTI70.Pi(k));
 end
 for k = 1:z
     PPTI70.WeibPi(k) = log(-log(1-PPTI70.Pi(k)));
@@ -238,9 +290,13 @@ print('PPP70TIWeibull','-dpng')
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DATA GREATER THAN 60 KMPH but analysing Inter-arrival time
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 PPTI60 = WindData{1}(:,3);
 PPTI60 = sortrows(PPTI60,1,'ascend');
+%calculations for PPP
 z = numel(PPTI60);
 for k = 1:z
     PPTI60.Ln_TI(k) = log(PPTI60.Time_Interval(k));
@@ -253,6 +309,9 @@ for k = 1:z
 end
 for k = 1:z
     PPTI60.InvPi(k) = norminv(PPTI60.Pi(k));
+end
+for k = 1:z
+    PPTI60.ExpPi(k) = -log(1-PPTI60.Pi(k));
 end
 for k = 1:z
     PPTI60.WeibPi(k) = log(-log(1-PPTI60.Pi(k)));
@@ -297,10 +356,25 @@ X = sprintf('%f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 annotation('textbox',dim,'String',X,'FitBoxToText','on');
 print('PPP60TIWeibull','-dpng')
 
+%===================================
+%USING A FUNCTION TO FIND A DISTRIBUTION
+%===================================
+[D1, PD1] = allfitdist(PPTH60.Kmph, 'PDF');
+[D1, PD1] = allfitdist(PPTH60.Kmph, 'CDF');
+[D2, PD2] = allfitdist(PPTH70.Kmph, 'PDF');
+[D3, PD3] = allfitdist(PPTI70.Time_Interval, 'PDF');
+[D4, PD4] = allfitdist(PPTI60.Time_Interval, 'PDF');
 
-% 
-% File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step4.xlsx';
-% writetable(PPTH60,File,'Sheet','PPP < 60kmph');
-% writetable(PPTH70,File,'Sheet','PPP < 70kmph');
-% writetable(PPTI60,File,'Sheet','PPP 60 interarrival');
-% writetable(PPTI70,File,'Sheet','PPP 70 interarrival');
+File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step4.xlsx';
+%===================================
+%CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
+%===================================
+for SheetNum=1:4
+     [N, T, Raw]=xlsread(File, SheetNum);
+     [Raw{:, :}]=deal(NaN);
+     xlswrite(File, Raw, SheetNum);
+end
+writetable(PPTH60,File,'Sheet','PPP > 60kmph');
+writetable(PPTH70,File,'Sheet','PPP > 70kmph');
+writetable(PPTI60,File,'Sheet','PPP 60 interarrival');
+writetable(PPTI70,File,'Sheet','PPP 70 interarrival');
