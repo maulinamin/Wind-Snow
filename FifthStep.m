@@ -1,10 +1,20 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In this step I plot WindSpeed vs Time
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%==================================
+% Basic Initialization instructions
+%==================================
 clear; % Clear Memory
 clc; %Clear Command Window
+
 %Define the folder location of CSV files
 folder='C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&SnowData\CSV\Trenton';
 i=1; %Set i=1 so that it does not give error for data{0} which is impossible
 %use the Datastore function to read all the CSV files in the folder
-ds = tabularTextDatastore(folder,'FileExtensions','.csv','SelectedVariableNames',{'Date_Time','SpdOfMaxGust_km_h_'});
+ds = tabularTextDatastore(folder,'FileExtensions','.csv','SelectedVariableNames',{'Date_Time','Year','Month','Day','SpdOfMaxGust_km_h_'});
 %a while loop divides the Datastore variable data into years
 wind_data = readall(ds);
 %Make a second set of data. Here we just replace <31 with 30.5 in the data
@@ -22,3 +32,46 @@ Wind_Gust = cell2table(wind_data.SpdOfMaxGust_km_h_);
 Wind_Gust = table2array(Wind_Gust);
 Wind_Gust = str2double(Wind_Gust);
 wind_data.SpdOfMaxGust_km_h_ = (Wind_Gust);
+%Convert Year data from String to Number
+Wind_Year = cell2table(wind_data.Year);
+Wind_Year = table2array(Wind_Year);
+Wind_Year = str2double(Wind_Year);
+wind_data.Year = (Wind_Year);
+%Convert Month data from String to Number
+Wind_Month = cell2table(wind_data.Month);
+Wind_Month = table2array(Wind_Month);
+Wind_Month = str2double(Wind_Month);
+wind_data.Month = (Wind_Month);
+%Convert Day data from String to Number
+Wind_Day = cell2table(wind_data.Day);
+Wind_Day = table2array(Wind_Day);
+Wind_Day = str2double(Wind_Day);
+wind_data.Day = (Wind_Day);
+
+plot_windvstime = wind_data;
+% toDelete = plot_windvstime.Month ~= 1;
+% plot_windvstime(toDelete,:) = [];
+figure(1)
+plot(plot_windvstime.Date_Time,plot_windvstime.SpdOfMaxGust_km_h_)
+xlabel('Time'); ylabel('Wind Speed KMPH');
+title('Vickrey, P. (2017)');
+%reduced number of years
+toDelete = plot_windvstime.Year < 1990;
+plot_windvstime(toDelete,:) = [];
+figure(2)
+plot(plot_windvstime.Date_Time,plot_windvstime.SpdOfMaxGust_km_h_)
+xlabel('Time'); ylabel('Wind Speed KMPH');
+title('Vickrey, P. (2017) with reduced number of years');
+% File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step5.xlsx';
+% %===================================
+% %CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
+% %===================================
+% for SheetNum=1:1
+%      [N, T, Raw]=xlsread(File, SheetNum);
+%      [Raw{:, :}]=deal(NaN);
+%      xlswrite(File, Raw, SheetNum);
+% end
+% %===================================
+% %WRITE THE DATA ON EXCEL FILE 
+% %===================================
+% writetable(plot_windvstime,File,'Sheet','TimevsSpeed');
