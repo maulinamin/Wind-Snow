@@ -60,8 +60,8 @@ hold on
 plot(plot_windvstime.Date_Time,plot_windvstime.constant,'LineWidth',2.1)
 hold off
 xlabel('Time'); ylabel('Wind Speed KMPH');
-title('Windspeed vs Time for Trenton');
-set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+title('Windspeed vs Time (Trenton)');
+set(gca,'Ylim',[30 110]) % Adjust Y limits of "current axes"
 set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
@@ -82,8 +82,8 @@ hold on
 plot(rplot_windvstime.Date_Time,rplot_windvstime.constant,'LineWidth',2.1)
 hold off
 xlabel('Time'); ylabel('Wind Speed KMPH');
-title('Windspeed vs Time for Trenton (Only 2005-2011)');
-set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+title('Plot of Windspeed vs Time with reduced number of years');
+set(gca,'Ylim',[30 110]) % Adjust Y limits of "current axes"
 set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');

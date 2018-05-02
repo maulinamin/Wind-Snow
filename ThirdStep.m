@@ -1,7 +1,7 @@
 clear; % Clear Memory
 clc; %Clear Command Window
 %Location of the file
-File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step3_70.xlsx';
+File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step3.xlsx';
 % %===================================
 % %CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
 % %===================================

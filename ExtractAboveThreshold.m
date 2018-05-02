@@ -22,7 +22,7 @@ wind_data.SpdOfMaxGust_km_h_ = (Wind_Gust);
 %Delete all the data below 60kmph
 A = wind_data;
 A = table2timetable(A);
-toDelete = A.SpdOfMaxGust_km_h_ < 70;
+toDelete = A.SpdOfMaxGust_km_h_ < 60;
 A(toDelete,:) = [];
 %Calculate the time interval between the data
 A = timetable2table(A);

@@ -48,24 +48,26 @@ Wind_Day = table2array(Wind_Day);
 Wind_Day = str2double(Wind_Day);
 wind_data.Day = (Wind_Day);
 
+f = figure;
+p = uipanel('Parent',f,'BorderType','none'); 
+p.Title = 'My Super Title'; 
+p.TitlePosition = 'centertop'; 
+p.FontSize = 12;
+p.FontWeight = 'bold';
+
 plot_windvstime = wind_data;
 for k = 1:numel(plot_windvstime.Date_Time)
     plot_windvstime.constant(k) = 75;
 end
 % toDelete = plot_windvstime.Month ~= 1;
 % plot_windvstime(toDelete,:) = [];
-subplot(2,1,1)
+subplot(2,1,1,'Parent',p)
 plot(plot_windvstime.Date_Time,plot_windvstime.SpdOfMaxGust_km_h_)
 hold on
 plot(plot_windvstime.Date_Time,plot_windvstime.constant,'LineWidth',2.1)
 hold off
 xlabel('Time'); ylabel('Wind Speed KMPH');
-title('Windspeed vs Time for Trenton');
-set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
-set(gca,'FontName','Times');
-set(gcf,'Units','inches') % Set figure size units of "current figure"
-set(gcf,'Color','white');
-set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+title('Plot of Windspeed vs Time. This plot contains all the daily Wind Gust data for Trenton from 1955 to 2018.');
 
 %reduced number of years
 rplot_windvstime = wind_data;
@@ -76,20 +78,13 @@ toDelete = rplot_windvstime.Year < 2005;
 rplot_windvstime(toDelete,:) = [];
 toDelete = rplot_windvstime.Year > 2011;
 rplot_windvstime(toDelete,:) = [];
-subplot(2,1,2)
+subplot(2,1,2,'Parent',p)
 plot(rplot_windvstime.Date_Time,rplot_windvstime.SpdOfMaxGust_km_h_)
 hold on
 plot(rplot_windvstime.Date_Time,rplot_windvstime.constant,'LineWidth',2.1)
 hold off
 xlabel('Time'); ylabel('Wind Speed KMPH');
-title('Windspeed vs Time for Trenton (Only 2005-2011)');
-set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
-set(gca,'FontName','Times');
-set(gcf,'Units','inches') % Set figure size units of "current figure"
-set(gcf,'Color','white');
-set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 2.eps % Save as PDF
-
+title('Plot of Windspeed vs Time with reduced number of years');
 % File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step5.xlsx';
 % %===================================
 % %CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
