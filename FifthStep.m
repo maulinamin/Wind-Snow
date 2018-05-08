@@ -88,7 +88,7 @@ set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
 set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 2.eps % Save as PDF
+print -deps2c windvs.eps % Save as PDF
 
 % File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step5.xlsx';
 % %===================================

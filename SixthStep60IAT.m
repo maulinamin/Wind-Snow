@@ -86,6 +86,9 @@ z = numel(PPTH60);
 for k = 1:z
     PPTH60.Ln_TI(k) = log(PPTH60.TI(k));
 end
+toDelete = PPTH60.Ln_TI == 0;
+PPTH60(toDelete,:) = [];
+z = numel(PPTH60.Ln_TI);
 for k = 1:z
     PPTH60.Rank(k) = k;
 end
@@ -105,28 +108,33 @@ for k = 1:z
     PPTH60.GumbPi(k) = -log(-log(PPTH60.Pi(k)));
 end
 
-toDelete = PPTH60.Ln_TI == 0;
-PPTH60(toDelete,:) = [];
-
 
 %PLOT THE Exponential PPP
 p = polyfitB(PPTH60.ExpPi,PPTH60.TI,1,0); 
 f = polyval(p,PPTH60.ExpPi); 
 figure;
-subplot(2,2,1)
+%subplot(2,2,1)
 plot(PPTH60.ExpPi,PPTH60.TI,'.',PPTH60.ExpPi,f,'-')
 grid on;
 legend('data','linear fit')
 dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.ExpPi,PPTH60.TI);
 ylabel('Data(Xi)'); xlabel('-Ln(1-Pi)');
-X = sprintf('Exponential PPP for Interarrival time of wind data > 60KMPH: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+X = sprintf('Exponential PPP: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+legend('data','linear fit','Location','southeast')
 title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 306-exp60ti.eps % Save as PDF
 
 %PLOT THE LOGNORMAL PPP
 p = polyfit(PPTH60.InvPi,PPTH60.Ln_TI,1); 
-f = polyval(p,PPTH60.InvPi); 
-subplot(2,2,2)
+f = polyval(p,PPTH60.InvPi);
+figure;
+%subplot(2,2,2)
 plot(PPTH60.InvPi,PPTH60.Ln_TI,'.',PPTH60.InvPi,f,'-') 
 grid on;
 legend('data','linear fit')
@@ -134,13 +142,21 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_TI);
 ylabel('Ln(Xi)'); xlabel('Standard Normal Percentile');
 X = sprintf('LogNormal PPP: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+legend('data','linear fit','Location','southeast')
 title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 307-logn60ti.eps % Save as PDF
 
 %====================
 %PLOT THE WEIBULL PPP
 p = polyfit(PPTH60.WeibPi,PPTH60.Ln_TI,1); 
 f = polyval(p,PPTH60.WeibPi); 
-subplot(2,2,3)
+figure;
+%subplot(2,2,3)
 plot(PPTH60.WeibPi,PPTH60.Ln_TI,'.',PPTH60.WeibPi,f,'-') 
 grid on;
 legend('data','linear fit')
@@ -148,12 +164,20 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.WeibPi,PPTH60.Ln_TI);
 ylabel('Ln(Xi)'); xlabel('Ln(-Ln(1-Pi))');
 X = sprintf('Weibull PPP: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+legend('data','linear fit','Location','southeast')
 title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 308-wei60ti.eps % Save as PDF
 
 %PLOT THE Gumbel PPP
 p = polyfit(PPTH60.GumbPi,PPTH60.TI,1); 
-f = polyval(p,PPTH60.GumbPi); 
-subplot(2,2,4)
+f = polyval(p,PPTH60.GumbPi);
+figure;
+%subplot(2,2,4)
 plot(PPTH60.GumbPi,PPTH60.TI,'.',PPTH60.GumbPi,f,'-')
 grid on;
 legend('data','linear fit')
@@ -161,9 +185,14 @@ dim = [0.2 0.5 0.3 0.3];
 mdl = fitlm(PPTH60.GumbPi,PPTH60.TI);
 ylabel('Data(Xi)'); xlabel('(-Ln(-Ln(Pi)))');
 X = sprintf('Gumbel PPP: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+legend('data','linear fit','Location','southeast')
 title(X);
-
-suptitle('PPPs for Interarrival time of Wind Data > 60KMPH')
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 309-gum60ti.eps % Save as PDF
 
 
 % File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step6.xlsx';

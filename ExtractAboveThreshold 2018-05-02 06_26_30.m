@@ -1,10 +1,5 @@
 %this program is the function of Extracting the data above the threshold
-%Use this to verify the program
-clear; % Clear Memory
-clc; %Clear Command Window
-%Define the folder location of CSV files
-folder='C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&SnowData\CSV\Trenton';
-i=1; %Set i=1 so that it does not give error for data{0} which is impossible
+function WindData = ExtractAboveThrehold(folder)
 %use the Datastore function to read all the CSV files in the folder
 ds = tabularTextDatastore(folder,'FileExtensions','.csv','SelectedVariableNames',{'Date_Time','SpdOfMaxGust_km_h_'});
 %a while loop divides the Datastore variable data into years
@@ -27,16 +22,16 @@ wind_data.SpdOfMaxGust_km_h_ = (Wind_Gust);
 %Delete all the data below 60kmph
 A = wind_data;
 A = table2timetable(A);
-toDelete = A.SpdOfMaxGust_km_h_ < 60;
+toDelete = A.SpdOfMaxGust_km_h_ < 70;
 A(toDelete,:) = [];
 %Calculate the time interval between the data
 A = timetable2table(A);
 for k = 2:numel(A.Date_Time)
-A.Time_Interval(k) = daysact(A.Date_Time(k-1), A.Date_Time(k));
+    A.Time_Interval(k) = daysact(A.Date_Time(k-1), A.Date_Time(k));
 end
-%Copy it back to original
-wind_data = A;
 toDelete = A.Time_Interval < 7;
 A(toDelete,:) = [];
 %Copy it to the output variable
 WindData = A;
+
+end
