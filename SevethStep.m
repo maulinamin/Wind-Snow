@@ -110,9 +110,9 @@ set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
 set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c NHPPwind.eps % Save as PDF
+print -deps2c 318-NHPPwind.eps % Save as PDF
 
-File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step7.xlsx';
+File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step7_Trenton.xlsx';
 %===================================
 %CLEAR THE EXCEL FILE BEFORE RUNNING THE PROGRAM
 %===================================

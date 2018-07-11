@@ -108,7 +108,102 @@ for k = 1:z
     PPTH60.GumbPi(k) = -log(-log(PPTH60.Pi(k)));
 end
 
+%PLOT THE LOGNORMAL PPP
+p = polyfit(PPTH60.InvPi,PPTH60.Ln_TI,1); 
+f = polyval(p,PPTH60.InvPi); 
+figure;
+subplot(2,2,1)
+plot(PPTH60.InvPi,PPTH60.Ln_TI,'.',PPTH60.InvPi,f,'-') 
+grid on;
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_TI);
+ylabel('Ln(Xi)'); xlabel('Standard Normal Percentile');
+X = sprintf('LogNormal');
+legend('data','linear fit','Location','southeast')
+title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
 
+%PLOT THE Exponential PPP
+p = polyfitB(PPTH60.ExpPi,PPTH60.TI,1,0); 
+f = polyval(p,PPTH60.ExpPi); 
+subplot(2,2,2)
+plot(PPTH60.ExpPi,PPTH60.TI,'.',PPTH60.ExpPi,f,'-')
+grid on;
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH60.ExpPi,PPTH60.TI);
+ylabel('Data(Xi)'); xlabel('-Ln(1-Pi)');
+X = sprintf('Exponential');
+legend('data','linear fit','Location','southeast')
+title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+
+%====================
+%PLOT THE WEIBULL PPP
+p = polyfit(PPTH60.WeibPi,PPTH60.Ln_TI,1); 
+f = polyval(p,PPTH60.WeibPi); 
+subplot(2,2,3)
+plot(PPTH60.WeibPi,PPTH60.Ln_TI,'.',PPTH60.WeibPi,f,'-') 
+grid on;
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH60.WeibPi,PPTH60.Ln_TI);
+ylabel('Ln(Xi)'); xlabel('Ln(-Ln(1-Pi))');
+X = sprintf('Weibull');
+legend('data','linear fit','Location','southeast')
+title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+
+%PLOT THE Gumbel PPP
+p = polyfit(PPTH60.GumbPi,PPTH60.TI,1); 
+f = polyval(p,PPTH60.GumbPi); 
+subplot(2,2,4)
+plot(PPTH60.GumbPi,PPTH60.TI,'.',PPTH60.GumbPi,f,'-')
+grid on;
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH60.GumbPi,PPTH60.TI);
+ylabel('Data(Xi)'); xlabel('(-Ln(-Ln(Pi)))');
+X = sprintf('Gumbel');
+legend('data','linear fit','Location','southeast')
+title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,7.5,5.5]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 314-315-316-317.eps % Scave as PDF
+movefile('314-315-316-317.eps','C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Thesis\Latex\plots');
+
+%
+%
+%
+
+%PLOT THE LOGNORMAL PPP
+p = polyfit(PPTH60.InvPi,PPTH60.Ln_TI,1); 
+f = polyval(p,PPTH60.InvPi); 
+figure;
+%subplot(2,2,2)
+plot(PPTH60.InvPi,PPTH60.Ln_TI,'.',PPTH60.InvPi,f,'-') 
+grid on;
+legend('data','linear fit')
+dim = [0.2 0.5 0.3 0.3];
+mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_TI);
+ylabel('Ln(Xi)'); xlabel('Standard Normal Percentile');
+X = sprintf('Lognormal PPP: %f X + %f & R^2 = %f',p(1),p(2),mdl.Rsquared.Ordinary);
+legend('data','linear fit','Location','southeast')
+title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 314.eps % Save as PDF
+movefile('314.eps','C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Thesis\Latex\plots');
 
 %PLOT THE Exponential PPP
 p = polyfitB(PPTH60.ExpPi,PPTH60.TI,1,0); 
@@ -129,28 +224,8 @@ set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
 set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 314-exp70ti.eps % Save as PDF
-
-%PLOT THE LOGNORMAL PPP
-p = polyfit(PPTH60.InvPi,PPTH60.Ln_TI,1); 
-f = polyval(p,PPTH60.InvPi); 
-figure;
-%subplot(2,2,2)
-plot(PPTH60.InvPi,PPTH60.Ln_TI,'.',PPTH60.InvPi,f,'-') 
-grid on;
-legend('data','linear fit')
-dim = [0.2 0.5 0.3 0.3];
-mdl = fitlm(PPTH60.InvPi,PPTH60.Ln_TI);
-ylabel('Ln(Xi)'); xlabel('Standard Normal Percentile');
-X = sprintf('LogNormal PPP: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
-legend('data','linear fit','Location','southeast')
-title(X);
-%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
-set(gca,'FontName','Times');
-set(gcf,'Units','inches') % Set figure size units of "current figure"
-set(gcf,'Color','white');
-set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 315-logn70ti.eps % Save as PDF
+print -deps2c 315.eps % Save as PDF
+movefile('315.eps','C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Thesis\Latex\plots');
 
 %====================
 %PLOT THE WEIBULL PPP
@@ -172,7 +247,8 @@ set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
 set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 316-wei70ti.eps % Save as PDF
+print -deps2c 316.eps % Save as PDF
+movefile('316.eps','C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Thesis\Latex\plots');
 
 %PLOT THE Gumbel PPP
 p = polyfit(PPTH60.GumbPi,PPTH60.TI,1); 
@@ -193,7 +269,8 @@ set(gca,'FontName','Times');
 set(gcf,'Units','inches') % Set figure size units of "current figure"
 set(gcf,'Color','white');
 set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
-print -deps2c 317-gum70ti.eps % Save as PDF
+print -deps2c 317.eps % Save as PDF
+movefile('317.eps','C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Thesis\Latex\plots');
 
 % File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step6.xlsx';
 % ===================================

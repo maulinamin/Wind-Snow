@@ -105,6 +105,12 @@ mdl = fitlm(A.Ln_CumTI,A.Ln_Cum_Nt);
 ylabel('Ln(Cum N(t))'); xlabel('Ln(Time)');
 X = sprintf('NHPP for wind data >70kmph: %f X + %f and R-squared = %f',p(1),p(2),mdl.Rsquared.Ordinary);
 title(X);
+%set(gca,'Ylim',[30 160]) % Adjust Y limits of "current axes"
+set(gca,'FontName','Times');
+set(gcf,'Units','inches') % Set figure size units of "current figure"
+set(gcf,'Color','white');
+set(gcf,'Position',[0,0,6,4]) % Set figure width (6 in.) and height (4 in.)
+print -deps2c 319-NHPPwind.eps % Save as PDF
 
 File = 'C:\Users\Maulin Amin\OneDrive - University of Waterloo\Waterloo\Winter 2018\Environment Canada\Wind&Snow\Step7.xlsx';
 %===================================
